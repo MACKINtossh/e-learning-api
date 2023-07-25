@@ -32,7 +32,7 @@ export class Quiz {
 
   // Relationship with Course
   @ManyToOne(() => Course, (course) => course.quizzes)
-  course: Course[];
+  course: Course;
 
   // Relationship with Question
   @OneToMany(() => Question, (question) => question.quiz)
