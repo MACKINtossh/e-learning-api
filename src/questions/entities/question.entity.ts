@@ -1,4 +1,5 @@
 import { Quiz } from 'src/quizzes/entities/quiz.entity';
+import { UserAnswer } from 'src/user-answer/entities/user-answer.entity';
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -6,6 +7,7 @@ import {
   ManyToOne,
   CreateDateColumn,
   UpdateDateColumn,
+  OneToMany,
 } from 'typeorm';
 
 
@@ -29,4 +31,8 @@ export class Question {
   // Relationship with Quiz
   @ManyToOne(() => Quiz, (quiz) => quiz.questions)
   quiz: Quiz;
+
+  // Relationship with UserAnswer
+  @OneToMany(() => UserAnswer, (userAnswer) => userAnswer.question)
+  userAnswers: UserAnswer[];
 }
