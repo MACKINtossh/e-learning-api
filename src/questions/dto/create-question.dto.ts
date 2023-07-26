@@ -1,4 +1,6 @@
-import { IsNotEmpty } from "class-validator";
+import { ArrayMinSize, IsArray, IsNotEmpty, ValidateNested } from "class-validator";
+import { CreateAnswerDto } from "src/answer/dto/create-answer.dto";
+import { Type } from 'class-transformer';
 
 // CreateQuestionDto
 export class CreateQuestionDto {
@@ -6,8 +8,12 @@ export class CreateQuestionDto {
   question_text: string;
 
   @IsNotEmpty()
-  correct_answer: string;
+  quizId: number;
 
   @IsNotEmpty()
-  quizId: number;
+  @IsArray()
+  @ArrayMinSize(1)
+  @ValidateNested({ each: true })
+  @Type(() => CreateAnswerDto)
+  answers: CreateAnswerDto[];
 }

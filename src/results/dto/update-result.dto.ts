@@ -8,5 +8,8 @@ export class UpdateResultDto {
   quizId?: string; // the ID of the quiz this result is for
 
   @IsNumber()
-  score?: number; // the user's score on this quiz
+  totalQuestions?: number; // Total questions in the quiz
+
+  @IsNumber()
+  totalCorrectAnswers?: number; // The number of correct answers
 }

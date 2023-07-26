@@ -1,51 +1,66 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Quiz } from './entities/quiz.entity';
 import { CreateQuizDto } from './dto/create-quiz.dto';
 import { UpdateQuizDto } from './dto/update-quiz.dto';
+import { Quiz } from './entities/quiz.entity';
+import { Course } from '../courses/entities/course.entity';
 
 @Injectable()
 export class QuizzesService {
   constructor(
     @InjectRepository(Quiz)
     private readonly quizRepository: Repository<Quiz>,
+    @InjectRepository(Course)
+    private readonly courseRepository: Repository<Course>,
   ) {}
 
-  async create(createQuizDto: CreateQuizDto) {
-    const quiz = this.quizRepository.create(createQuizDto);
+  async create(courseId: number, createQuizDto: CreateQuizDto): Promise<Quiz> {
+    const course = await this.courseRepository.findOne({
+      where: { id: courseId },
+    });
+    if (!course) {
+      throw new NotFoundException(`Course with ID ${courseId} not found`);
+    }
+    const quiz = this.quizRepository.create({ ...createQuizDto, course });
     return this.quizRepository.save(quiz);
   }
 
-  findAll() {
-    return this.quizRepository.find(); // find all quizzes
+  findAll(courseId: number): Promise<Quiz[]> {
+    return this.quizRepository.find({ where: { course: { id: courseId } } });
   }
 
-  async findOne(id: number) {
-    const quiz = await this.quizRepository.findOne({ where: { id: id } });
+  async findOne(courseId: number, id: number): Promise<Quiz> {
+    const quiz = await this.quizRepository.findOne({
+      where: { id: id, course: { id: courseId } },
+    });
     if (!quiz) {
-      throw new NotFoundException(`Quiz #${id} not found`);
+      throw new NotFoundException(
+        `Quiz with ID ${id} not found in course with ID ${courseId}`,
+      );
     }
     return quiz;
   }
 
-  async update(id: number, updateQuizDto: UpdateQuizDto) {
-    const quiz = await this.quizRepository.findOne({ where: { id: id } });
+  async update(
+    courseId: number,
+    id: number,
+    updateQuizDto: UpdateQuizDto,
+  ): Promise<Quiz> {
+    const quiz = await this.quizRepository.preload({
+      id: id,
+      ...updateQuizDto,
+    });
     if (!quiz) {
-      throw new NotFoundException(`Quiz #${id} not found`);
-    }
-    if (updateQuizDto.name) {
-      quiz.name = updateQuizDto.name;
-    }
-    if (updateQuizDto.questions) {
-      // You would need to load the questions from the database and then assign them.
-      // I am skipping this part as you would need to define how you want to handle it.
-      // quiz.questions = ...
+      throw new NotFoundException(
+        `Quiz with ID ${id} not found in course with ID ${courseId}`,
+      );
     }
     return this.quizRepository.save(quiz);
   }
-  async remove(id: number) {
-    const quiz = await this.findOne(id);
-    return this.quizRepository.remove(quiz); // Remove the quiz
+
+  async remove(courseId: number, id: number): Promise<void> {
+    const quiz = await this.findOne(courseId, id);
+    await this.quizRepository.remove(quiz);
   }
 }

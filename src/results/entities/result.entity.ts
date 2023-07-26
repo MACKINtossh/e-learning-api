@@ -9,17 +9,16 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-
 @Entity()
 export class Result {
   @PrimaryGeneratedColumn()
   id: number;
 
   @Column('int')
-  score: number;
+  totalQuestions: number; // Total questions in the quiz
 
   @Column('int')
-  total_questions: number;
+  totalCorrectAnswers: number; // The number of correct answers
 
   @CreateDateColumn()
   created_at: Date;

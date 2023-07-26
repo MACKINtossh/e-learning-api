@@ -11,24 +11,25 @@ export class ResultsService {
     private readonly resultRepository: Repository<Result>,
   ) {}
 
-  create(createResultDto: CreateResultDto) {
+  async create(createResultDto: CreateResultDto) {
     const result = this.resultRepository.create(createResultDto);
     return this.resultRepository.save(result);
   }
 
-  findAll() {
-    return `This action returns all results`;
+  async findAll() {
+    return this.resultRepository.find();
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} result`;
+    return this.resultRepository.findOne({ where: { id: id } });
   }
 
-  update(id: number, updateResultDto: UpdateResultDto) {
-    return this.resultRepository.update(id, updateResultDto);
+  async update(id: number, updateResultDto: UpdateResultDto) {
+    await this.resultRepository.update(id, updateResultDto);
+    return this.resultRepository.findOne({ where: { id: id } });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} result`;
+  async remove(id: number) {
+    return this.resultRepository.delete(id);
   }
 }

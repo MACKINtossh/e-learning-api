@@ -1,3 +1,4 @@
+import { Answer } from 'src/answer/entities/answer.entity';
 import { Quiz } from 'src/quizzes/entities/quiz.entity';
 import { UserAnswer } from 'src/user-answer/entities/user-answer.entity';
 import {
@@ -19,20 +20,12 @@ export class Question {
   @Column('text')
   question_text: string;
 
-  @Column({ length: 100 })
-  correct_answer: string;
-
-  // @CreateDateColumn()
-  // created_at: Date;
-
-  // @UpdateDateColumn()
-  // updated_at: Date;
-
   // Relationship with Quiz
   @ManyToOne(() => Quiz, (quiz) => quiz.questions)
   quiz: Quiz;
 
-  // Relationship with UserAnswer
-  @OneToMany(() => UserAnswer, (userAnswer) => userAnswer.question)
-  userAnswers: UserAnswer[];
+  // Relationship with Answer
+  @OneToMany(() => Answer, (answer) => answer.question)
+  answers: Answer[];
+
 }

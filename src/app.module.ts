@@ -9,6 +9,7 @@ import { ResultsModule } from './results/results.module';
 import { UserAnswerModule } from './user-answer/user-answer.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
+import { AnswerModule } from './answer/answer.module';
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
@@ -29,6 +30,7 @@ import { ConfigModule } from '@nestjs/config';
     QuestionsModule,
     ResultsModule,
     UserAnswerModule,
+    AnswerModule,
   ],
   controllers: [AppController],
   providers: [AppService],

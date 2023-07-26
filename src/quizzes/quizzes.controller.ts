@@ -12,33 +12,40 @@ import { CreateQuizDto } from './dto/create-quiz.dto';
 import { UpdateQuizDto } from './dto/update-quiz.dto';
 import { ApiTags } from '@nestjs/swagger';
 
-@Controller('quizzes')
+@Controller('courses/:courseId/quizzes')
 @ApiTags('Quizzes')
 export class QuizzesController {
   constructor(private readonly quizzesService: QuizzesService) {}
 
   @Post()
-  create(@Body() createQuizDto: CreateQuizDto) {
-    return this.quizzesService.create(createQuizDto);
+  create(
+    @Param('courseId') courseId: string,
+    @Body() createQuizDto: CreateQuizDto,
+  ) {
+    return this.quizzesService.create(+courseId, createQuizDto);
   }
 
   @Get()
-  findAll() {
-    return this.quizzesService.findAll();
+  findAll(@Param('courseId') courseId: string) {
+    return this.quizzesService.findAll(+courseId);
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.quizzesService.findOne(+id);
+  findOne(@Param('courseId') courseId: string, @Param('id') id: string) {
+    return this.quizzesService.findOne(+courseId, +id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateQuizDto: UpdateQuizDto) {
-    return this.quizzesService.update(+id, updateQuizDto);
+  update(
+    @Param('courseId') courseId: string,
+    @Param('id') id: string,
+    @Body() updateQuizDto: UpdateQuizDto,
+  ) {
+    return this.quizzesService.update(+courseId, +id, updateQuizDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.quizzesService.remove(+id);
+  remove(@Param('courseId') courseId: string, @Param('id') id: string) {
+    return this.quizzesService.remove(+courseId, +id);
   }
 }

@@ -10,27 +10,27 @@ export class ResultsController {
   constructor(private readonly resultsService: ResultsService) {}
 
   @Post()
-  create(@Body() createResultDto: CreateResultDto) {
+  async create(@Body() createResultDto: CreateResultDto) {
     return this.resultsService.create(createResultDto);
   }
 
   @Get()
-  findAll() {
+  async findAll() {
     return this.resultsService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  async findOne(@Param('id') id: string) {
     return this.resultsService.findOne(+id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateResultDto: UpdateResultDto) {
+  async update(@Param('id') id: string, @Body() updateResultDto: UpdateResultDto) {
     return this.resultsService.update(+id, updateResultDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  async remove(@Param('id') id: string) {
     return this.resultsService.remove(+id);
   }
 }
