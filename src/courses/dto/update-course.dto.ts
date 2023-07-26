@@ -1,9 +1,16 @@
-import { IsString } from 'class-validator';
+import { IsArray, IsOptional, IsString } from 'class-validator';
+import { CreateQuizDto } from 'src/quizzes/dto/create-quiz.dto';
 
 export class UpdateCourseDto {
+  @IsOptional()
   @IsString()
-  title?: string;
+  name?: string;
 
+  @IsOptional()
   @IsString()
-  description?: string;
+  description: string;
+
+  @IsOptional()
+  @IsArray()
+  quizzes?: CreateQuizDto[];
 }
