@@ -18,7 +18,7 @@ export class Course {
   @Column({
     length: 50,
   })
-  title: string;
+  name: string;
 
   @Column('text')
   description: string;
