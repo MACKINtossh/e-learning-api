@@ -33,11 +33,11 @@ export class User {
   })
   email: string;
 
-  @Column()
-  created_at: Date;
+  // @Column()
+  // created_at: Date;
 
-  @Column()
-  updated_at: Date;
+  // @Column()
+  // updated_at: Date;
 
   // Relationship with Result
   @OneToMany(() => Result, (result) => result.user)

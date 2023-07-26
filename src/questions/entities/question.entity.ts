@@ -22,11 +22,11 @@ export class Question {
   @Column({ length: 100 })
   correct_answer: string;
 
-  @CreateDateColumn()
-  created_at: Date;
+  // @CreateDateColumn()
+  // created_at: Date;
 
-  @UpdateDateColumn()
-  updated_at: Date;
+  // @UpdateDateColumn()
+  // updated_at: Date;
 
   // Relationship with Quiz
   @ManyToOne(() => Quiz, (quiz) => quiz.questions)

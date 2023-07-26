@@ -1,11 +1,19 @@
 import { Injectable } from '@nestjs/common';
 import { CreateUserAnswerDto } from './dto/create-user-answer.dto';
 import { UpdateUserAnswerDto } from './dto/update-user-answer.dto';
-
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { UserAnswer } from './entities/user-answer.entity';
 @Injectable()
 export class UserAnswerService {
+  constructor(
+    @InjectRepository(UserAnswer)
+    private readonly userAnswerRepository: Repository<UserAnswer>,
+  ) {}
+
   create(createUserAnswerDto: CreateUserAnswerDto) {
-    return 'This action adds a new userAnswer';
+    const userAnswer = this.userAnswerRepository.create(createUserAnswerDto);
+    return this.userAnswerRepository.save(userAnswer);
   }
 
   findAll() {
@@ -17,7 +25,7 @@ export class UserAnswerService {
   }
 
   update(id: number, updateUserAnswerDto: UpdateUserAnswerDto) {
-    return `This action updates a #${id} userAnswer`;
+    return this.userAnswerRepository.update(id, updateUserAnswerDto);
   }
 
   remove(id: number) {

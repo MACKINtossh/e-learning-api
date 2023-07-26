@@ -1,11 +1,19 @@
 import { Injectable } from '@nestjs/common';
 import { CreateResultDto } from './dto/create-result.dto';
 import { UpdateResultDto } from './dto/update-result.dto';
-
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Result } from './entities/result.entity';
 @Injectable()
 export class ResultsService {
+  constructor(
+    @InjectRepository(Result)
+    private readonly resultRepository: Repository<Result>,
+  ) {}
+
   create(createResultDto: CreateResultDto) {
-    return 'This action adds a new result';
+    const result = this.resultRepository.create(createResultDto);
+    return this.resultRepository.save(result);
   }
 
   findAll() {
@@ -17,7 +25,7 @@ export class ResultsService {
   }
 
   update(id: number, updateResultDto: UpdateResultDto) {
-    return `This action updates a #${id} result`;
+    return this.resultRepository.update(id, updateResultDto);
   }
 
   remove(id: number) {

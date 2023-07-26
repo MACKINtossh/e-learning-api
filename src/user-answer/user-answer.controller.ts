@@ -2,8 +2,10 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { UserAnswerService } from './user-answer.service';
 import { CreateUserAnswerDto } from './dto/create-user-answer.dto';
 import { UpdateUserAnswerDto } from './dto/update-user-answer.dto';
+import { ApiTags } from '@nestjs/swagger';
 
 @Controller('user-answer')
+@ApiTags('User Answers')
 export class UserAnswerController {
   constructor(private readonly userAnswerService: UserAnswerService) {}
 
@@ -23,7 +25,10 @@ export class UserAnswerController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserAnswerDto: UpdateUserAnswerDto) {
+  update(
+    @Param('id') id: string,
+    @Body() updateUserAnswerDto: UpdateUserAnswerDto,
+  ) {
     return this.userAnswerService.update(+id, updateUserAnswerDto);
   }
 

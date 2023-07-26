@@ -18,16 +18,16 @@ export class Course {
   @Column({
     length: 50,
   })
-  name: string;
+  title: string;
 
   @Column('text')
   description: string;
 
-  @CreateDateColumn()
-  created_at: Date;
+  // @CreateDateColumn()
+  // created_at: Date;
 
-  @UpdateDateColumn()
-  updated_at: Date;
+  // @UpdateDateColumn()
+  // updated_at: Date;
 
   // Relationship with Quiz
   @OneToMany(() => Quiz, (quiz) => quiz.course)
