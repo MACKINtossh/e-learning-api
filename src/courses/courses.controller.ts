@@ -24,6 +24,11 @@ export class CoursesController {
     return this.coursesService.findOne(+id);
   }
 
+  @Get(':id/quizzes')
+  async findQuizzes(@Param('id') id: string) {
+    return this.coursesService.findQuizzes(+id);
+  }
+
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateCourseDto: UpdateCourseDto) {
     return this.coursesService.update(+id, updateCourseDto);
