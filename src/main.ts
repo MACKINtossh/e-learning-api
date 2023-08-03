@@ -11,7 +11,12 @@ dotenv.config({ path: envFile });
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-
+  app.enableCors({
+    origin: 'http://localhost:4200', // the address of the front-end application
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    allowedHeaders: 'Content-Type, Accept',
+    credentials: true,
+  });
   const config = new DocumentBuilder()
     .setTitle('Amesite e-learning API')
     .setDescription('The API description for Amesite e-learning platform')
